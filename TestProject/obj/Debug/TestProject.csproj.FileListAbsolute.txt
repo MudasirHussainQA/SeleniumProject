@@ -7,6 +7,6 @@ C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\b
 C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\bin\Debug\WebDriver.xml
 C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\bin\Debug\WebDriver.Support.xml
 C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\obj\Debug\TestProject.csprojResolveAssemblyReference.cache
 C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\obj\Debug\TestProject.dll
 C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\obj\Debug\TestProject.pdb
-C:\Users\Mudasir\Documents\Visual Studio 2015\Projects\TestProject\TestProject\obj\Debug\TestProject.csprojResolveAssemblyReference.cache

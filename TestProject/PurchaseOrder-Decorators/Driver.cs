@@ -14,5 +14,7 @@ namespace TestProject.PurchaseOrder_Decorators
         public abstract void GoToUrl(string url);
         public abstract Element FindElement(By locator);
         public abstract List<Element> FindElements(By locator);
+        public abstract void WaitForAjax();
+        public abstract void WaitUntilPageLoadsCompletely();
     }
 }

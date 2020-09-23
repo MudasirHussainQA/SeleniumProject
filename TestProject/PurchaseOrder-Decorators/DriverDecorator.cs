@@ -40,5 +40,14 @@ namespace TestProject.PurchaseOrder_Decorators
         {
             return Driver?.FindElements(locator);
         }
+        public override void WaitForAjax()
+        {
+            Driver?.WaitForAjax();
+        }
+
+        public override void WaitUntilPageLoadsCompletely()
+        {
+            Driver?.WaitUntilPageLoadsCompletely();
+        }
     }
 }

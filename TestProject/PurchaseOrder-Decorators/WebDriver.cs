@@ -9,9 +9,6 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestProject.PurchaseOrder_Decorators
 {
@@ -83,6 +80,18 @@ namespace TestProject.PurchaseOrder_Decorators
             }
 
             return elements;
+        }
+
+        public override void WaitForAjax()
+        {
+            var js = (IJavaScriptExecutor)_webDriver;
+            _webDriverWait.Until(wd => js.ExecuteScript("return jQuery.active").ToString() == "0");
+        }
+
+        public override void WaitUntilPageLoadsCompletely()
+        {
+            var js = (IJavaScriptExecutor)_webDriver;
+            _webDriverWait.Until(wd => js.ExecuteScript("return document.readyState").ToString() == "complete");
         }
     }
 }

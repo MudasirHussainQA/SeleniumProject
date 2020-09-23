@@ -16,15 +16,15 @@ namespace TestProject.PurchaseOrder_Decorators
         private static string _purchaseEmail= "info@berlinspaceflowers.com";
         private static string _purchaseOrderNumber;
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
+        [TestInitialize]
+        public void TestInitialize()
         {
             _driver = new LoggingDriver(new WebDriver());
             _driver.Start(Browser.Chrome);
         }
 
-        [ClassCleanup]
-        public static void ClassCleanup()
+        [TestCleanup]
+        public void ClassCleanup()
         {
             _driver.Quit();
         }
@@ -32,6 +32,7 @@ namespace TestProject.PurchaseOrder_Decorators
         [TestMethod]
         public void CompletePurchaseSuccessfully_WhenNewClient()
         {
+            
             AddRocketToShoppingCart();
 
             ApplyCoupon();
@@ -69,7 +70,7 @@ namespace TestProject.PurchaseOrder_Decorators
             billingEmail.TypeText("info@berlinspaceflowers.com");
             _purchaseEmail = "info@berlinspaceflowers.com";
             // This pause will be removed when we introduce a logic for waiting for AJAX requests.
-            Thread.Sleep(5000);
+            _driver.WaitForAjax();
             var placeOrderButton = _driver.FindElement(By.Id("place_order"));
             placeOrderButton.Click();
 
@@ -80,21 +81,22 @@ namespace TestProject.PurchaseOrder_Decorators
         [TestMethod]
         public void CompletePurchaseSuccessfully_WhenExistingClient()
         {
+            
             AddRocketToShoppingCart();
             ApplyCoupon();
             IncreaseProductQuantity();
 
             var proceedToCheckout = _driver.FindElement(By.CssSelector("[class*='checkout-button button alt wc-forward']"));
             proceedToCheckout.Click();
-
+            _driver.WaitForAjax();
             var loginHereLink = _driver.FindElement(By.LinkText("Click here to login"));
             loginHereLink.Click();
             Login(_purchaseEmail);
-            Thread.Sleep(9000);
+            _driver.WaitForAjax();
             var placeOrderButton = _driver.FindElement(By.Id("place_order"));
             placeOrderButton.Click();
 
-            Thread.Sleep(9000);
+            _driver.WaitForAjax();
             var receivedMessage = _driver.FindElement(By.XPath("//h1[text() = 'Order received']"));
             Assert.AreEqual("Order received", receivedMessage.Text);
 
@@ -111,11 +113,11 @@ namespace TestProject.PurchaseOrder_Decorators
             myAccountLink.Click();
 
             Login(_purchaseEmail);
-            Thread.Sleep(7000);
-           // _purchaseOrderNumber = _driver.FindElement(By.CssSelector("td[data-title='Order'] a")).Text;
+            _driver.WaitForAjax();
+            // _purchaseOrderNumber = _driver.FindElement(By.CssSelector("td[data-title='Order'] a")).Text;
             var orders = _driver.FindElement(By.LinkText("Orders"));
             orders.Click();
-            Thread.Sleep(2000);
+            _driver.WaitForAjax();
             _purchaseOrderNumber = _driver.FindElement(By.CssSelector("td[data-title='Order'] a")).Text.Split()[0].TrimStart('#');
            
             var viewButtons = _driver.FindElements(By.LinkText("View"));
@@ -130,12 +132,14 @@ namespace TestProject.PurchaseOrder_Decorators
 
         public void Login(string userName)
         {
+            _driver.WaitForAjax();
             var userNameTextField = _driver.FindElement(By.Id("username"));
             // This pause will be removed when we introduce a logic for waiting for AJAX requests.
-            Thread.Sleep(5000);
+            _driver.WaitForAjax();
             userNameTextField.TypeText(userName);
             var passwordField = _driver.FindElement(By.Id("password"));
             passwordField.TypeText(GetUserPasswordFromDb(userName));
+            _driver.WaitForAjax();
             var loginButton = _driver.FindElement(By.XPath("//button[@name='login']"));
             loginButton.Click();
         }
@@ -144,10 +148,10 @@ namespace TestProject.PurchaseOrder_Decorators
         {
             var quantityBox = _driver.FindElement(By.CssSelector("[class*='input-text qty text']"));
             quantityBox.TypeText("2");
-
+            _driver.WaitForAjax();
             var updateCart = _driver.FindElement(By.CssSelector("[value*='Update cart']"));
             updateCart.Click();
-            Thread.Sleep(4000);
+            _driver.WaitForAjax();
 
             var totalSpan = _driver.FindElement(By.XPath("//*[@class='order-total']//span"));
             Assert.AreEqual("114.00€", totalSpan.Text);
@@ -157,11 +161,11 @@ namespace TestProject.PurchaseOrder_Decorators
         {
             var couponCodeTextField = _driver.FindElement(By.Id("coupon_code"));
             couponCodeTextField.TypeText("happybirthday");
-
+            _driver.WaitForAjax();
             var applyCouponButton = _driver.FindElement(By.CssSelector("[value*='Apply coupon']"));
             applyCouponButton.Click();
 
-            Thread.Sleep(5000);
+            _driver.WaitForAjax();
             var messageAlert = _driver.FindElement(By.CssSelector("[class*='woocommerce-message']"));
             Assert.AreEqual("Coupon code applied successfully.", messageAlert.Text);
         }
@@ -169,9 +173,9 @@ namespace TestProject.PurchaseOrder_Decorators
         public void AddRocketToShoppingCart()
         {
             _driver.GoToUrl("http://demos.bellatrix.solutions/");
-
+            _driver.WaitForAjax();
             var addToCartFalcon9 = _driver.FindElement(By.CssSelector("[data-product_id*='28']"));
-            addToCartFalcon9.Click();
+            addToCartFalcon9.Click();            
             var viewCartButton = _driver.FindElement(By.CssSelector("[class*='added_to_cart wc-forward']"));
             viewCartButton.Click();
         }
